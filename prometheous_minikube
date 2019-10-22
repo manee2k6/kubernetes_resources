@@ -1,0 +1,13 @@
+minikube version
+minikube start --wait=false
+helm version
+kubectl create serviceaccount tiller --namespace kube-system
+kubectl create clusterrolebinding tiller-role-binding --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+helm init --service-account tiller
+kubectl get po --namespace=kube-system
+helm repo up
+helm search stable/prometheus-operator --versions --version=">=4.3" --col-width=20
+helm install stable/prometheus-operator --version=4.3.6 --name=monitoring --namespace=monitoring
+kubectl get po --namespace=monitoring
+helm fetch stable/prometheus-operator --untar --version=4.3.6
+kubectl get pods --namespace=monitoring
